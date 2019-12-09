@@ -3,6 +3,7 @@
 #include "DEFINITIONS.hpp"
 #include "Player.hpp"
 #include "Platform.hpp"
+#include "Camera.hpp"
 
 
 int main() {
@@ -28,7 +29,8 @@ int main() {
 	sf::Time time;
 
 	//Camera
-	sf::View view(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT));
+	Camera camera;
+
 
 	while (window.isOpen()) {
 		while (window.pollEvent(event)) {
@@ -46,6 +48,8 @@ int main() {
 			}
 
 		}
+		camera.Render(window);
+
 		float dt = clock.restart().asSeconds();
 
 
@@ -55,6 +59,7 @@ int main() {
 		//Update
 		player.Update(dt, platforms);
 
+		camera.Update(dt, player);
 
 		//Draw
 		window.clear();

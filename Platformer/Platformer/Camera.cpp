@@ -1,22 +1,19 @@
 
 #include "Camera.hpp"
+#include <iostream>
 
 Camera::Camera() {
-	view.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-	view.setCenter(0.0f, 0.0f);
+	view.reset(sf::FloatRect(0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT));
 }
 
 Camera::~Camera() { }
 
 void Camera::Update(float dt, Player player) {
 	if (player.rect.getPosition().y < SCREEN_HEIGHT / 4) {
-		sf::Vector2f movement = player.rect.getPosition() - GetPosition();
+		//sf::Vector2f movement(0.0f, player.rect.getPosition().y+20);
+		sf::Vector2f movement(0.0, player.rect.getPosition().y - view.getCenter().y);
 		view.move(movement * dt);
 	}
-}
-
-sf::Vector2f Camera::GetPosition() {
-	return view.getCenter();
 }
 
 
