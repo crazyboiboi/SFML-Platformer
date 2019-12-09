@@ -10,10 +10,9 @@ Player::Player(std::string imgDirectory, float posX, float posY, sf::Vector2f si
 	std::cout << "INITIALISED" << std::endl;
 
 	rect.setFillColor(sf::Color::White);
-	pState = PLAYERSTATE::STAND;
 }
 
-Player::~Player() { std::cout << "OBJECT REMOVED" << std::endl; }
+Player::~Player() { }
 
 
 
@@ -51,10 +50,11 @@ void Player::UpdatePhysics(float dt) {
 }
 
 
-void Player::Update(float dt) {
+void Player::Update(float dt, std::vector<Platform> platforms) {
 	Move(dt);
 	rect.move(velocity + (acceleration));
-	UpdatePhysics(dt);
+	//UpdatePhysics(dt);
+	Collision(platforms);
 }
 
 
@@ -68,8 +68,7 @@ void Player::ShortJump() {
 
 
 void Player::Jump() {
-	is_grounded = rect.getPosition().y == (SCREEN_HEIGHT-rect.getSize().y/2) ? true : false; 
-	std::cout << is_grounded << std::endl;
+	//is_grounded = rect.getPosition().y == (SCREEN_HEIGHT-rect.getSize().y/2) ? true : false; 
 	if (is_grounded && !is_jumping) {
 		is_jumping = true;
 		velocity.y = -PLAYER_JUMP;
@@ -78,13 +77,21 @@ void Player::Jump() {
 }
 
 
-void Player::Collision(Platform platform) {
-	float right = rect.getPosition().x + (rect.getSize().x/2);
-
-	if (right >= platform.left) {
-		rect.setPosition(platform.left-(rect.getSize().x/2), rect.getPosition().y);
-	}
-
+void Player::Collision(std::vector<Platform> platforms) {
+	bottom = rect.getPosition().y + (rect.getSize().y / 2);
+	for (size_t i = 0; i < platforms.size(); i++)
+	{
+		if (velocity.y > 0) {
+			if (rect.getGlobalBounds().intersects(platforms[i].rect.getGlobalBounds())) {
+				if (bottom >= platforms[i].top) {
+					rect.setPosition(rect.getPosition().x, platforms[i].top - (rect.getSize().y / 2));
+					velocity.y = 0;
+					is_grounded = true;
+					is_jumping = false;
+				}
+			}
+		}
+	}	
 }
 
 

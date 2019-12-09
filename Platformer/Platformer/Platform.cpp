@@ -11,9 +11,12 @@ Platform::Platform(std::string imgDirectory, float posX, float posY, sf::Vector2
 	rect.setFillColor(sf::Color::Green);
 
 	left = rect.getPosition().x;
+	right = rect.getPosition().x + rect.getSize().x;
+	top = rect.getPosition().y;
+	bottom = rect.getPosition().y + rect.getSize().y;
 }
 
-Platform::~Platform() { std::cout << "PLATFORM DESTROYED" << std::endl; }
+Platform::~Platform() { }
 
 
 void Platform::Draw(sf::RenderWindow& window) {
