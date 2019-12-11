@@ -22,6 +22,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Platform.cpp" />
+    <ClCompile Include="PlatformGenerator.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -30,6 +31,7 @@
     <ClInclude Include="Entity.hpp" />
     <ClInclude Include="Hitbox.hpp" />
     <ClInclude Include="Platform.hpp" />
+    <ClInclude Include="PlatformGenerator.hpp" />
     <ClInclude Include="Player.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

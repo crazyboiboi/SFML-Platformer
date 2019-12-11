@@ -4,25 +4,19 @@
 #include "Player.hpp"
 #include "Platform.hpp"
 #include "Camera.hpp"
+#include "PlatformGenerator.hpp"
 
 
 int main() {
+	srand(time(NULL));
+
 	sf::RenderWindow window(sf::VideoMode(600, 800), "Platformer");
 	window.setFramerateLimit(60);
 
 	//Game Objects
 	Player player("images", 100, 600, sf::Vector2f(50, 50));
 	
-	Platform platform1("hmm", 0, 720, sf::Vector2f(800, 100));
-	Platform platform2("hmm", 125, 575, sf::Vector2f(200, 30));
-	Platform platform3("hmm", 400, 380, sf::Vector2f(200, 30));
-	Platform platform4("hmm", 300, 240, sf::Vector2f(200, 30));
-
-	std::vector<Platform> platforms;
-	platforms.push_back(platform1);
-	platforms.push_back(platform2);
-	platforms.push_back(platform3);
-	platforms.push_back(platform4);
+	PlatformGenerator platform;
 
 	sf::Event event;
 	sf::Clock clock;
@@ -57,16 +51,17 @@ int main() {
 
 
 		//Update
-		player.Update(dt, platforms);
+		player.Update(dt, platform.GetPlatforms());
 
 		camera.Update(dt, player);
+
+		platform.Update(camera);
+
 
 		//Draw
 		window.clear();
 
-		for (Platform p : platforms) {
-			p.Draw(window);
-		}
+		platform.Draw(window);
 
 		player.Draw(window);
 
