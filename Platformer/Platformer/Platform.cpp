@@ -1,13 +1,16 @@
-
 #include <iostream>
 #include "Platform.hpp"
 
-Platform::Platform(std::string imgDirectory, float posX, float posY, sf::Vector2f size) {
-	std::cout << "INITIALISED" << std::endl;
+
+
+Platform::Platform(sf::Texture& platform_tex, sf::IntRect intrect, float posX, float posY, sf::Vector2f size) {
+	sprite.setTexture(platform_tex);
+	sprite.setTextureRect(intrect);
+	sprite.setPosition(posX, posY);
+	sprite.setScale(size.x / 370, size.y / 85);
 
 	rect.setSize(size);
 	rect.setPosition(posX, posY);
-
 	rect.setFillColor(sf::Color::Green);
 
 	left = rect.getPosition().x;
@@ -20,5 +23,6 @@ Platform::~Platform() { }
 
 
 void Platform::Draw(sf::RenderWindow& window) {
-	window.draw(rect);
+	//window.draw(rect);
+	window.draw(sprite);
 }

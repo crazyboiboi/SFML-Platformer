@@ -8,8 +8,10 @@
 class PlatformGenerator {
 
 public:
-	PlatformGenerator();
+	PlatformGenerator(sf::Texture& spritesheet);
 	~PlatformGenerator();
+
+	void Initialize();
 
 	void SpawnPlatform();
 	void RemovePlatform(Camera& camera);
@@ -20,6 +22,9 @@ public:
 	std::vector<Platform> GetPlatforms();
 
 private:
+	sf::Texture _spritesheet;
+	sf::IntRect platform_image;
+
 	std::vector<Platform> platforms;
 	int _maxSize = 8;
 };

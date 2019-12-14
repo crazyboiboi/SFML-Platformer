@@ -6,7 +6,7 @@
 class Platform : public Entity {
 
 public:
-	Platform(std::string imgDirectory, float posX, float posY, sf::Vector2f size);
+	Platform(sf::Texture& spritesheet, sf::IntRect intrect, float posX, float posY, sf::Vector2f size);
 	~Platform();
 
 	void Draw(sf::RenderWindow& window);

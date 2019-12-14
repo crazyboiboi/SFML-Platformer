@@ -2,18 +2,32 @@
 #include <iostream>
 
 
-Player::Player(std::string imgDirectory, float posX, float posY, sf::Vector2f size) {
-	rect.setSize(size);
+Player::Player(sf::Texture& spritesheet, float posX, float posY, sf::Vector2f size) {
 	rect.setOrigin(size / 2.0f);
+	rect.setSize(size);
 	rect.setPosition(posX, posY);
-
-	std::cout << "INITIALISED" << std::endl;
-
 	rect.setFillColor(sf::Color::White);
+
+	sprite.setOrigin(rect.getOrigin().x+10, rect.getOrigin().y);
+	LoadAnimSprites(spritesheet);
 }
 
 Player::~Player() { }
 
+
+void Player::LoadAnimSprites(sf::Texture& spritesheet) {
+	sprite.setTexture(spritesheet);
+
+	idle_anim.push_back(sf::IntRect(614, 1063, 120, 191));
+	idle_anim.push_back(sf::IntRect(690, 406, 120, 201));
+
+	walk_anim.push_back(sf::IntRect(678, 860, 120, 201));
+	walk_anim.push_back(sf::IntRect(692, 1458, 120, 207));
+
+	jump_anim = sf::IntRect(382, 763, 150, 181);
+
+	sprite.setTextureRect(idle_anim[0]);
+}
 
 
 
@@ -37,24 +51,21 @@ void Player::Move(float dt) {
 }
 
 
-void Player::UpdatePhysics(float dt) {
-	//Check if player position and determine if it is grounded
-	if (rect.getPosition().y >= SCREEN_HEIGHT - (rect.getSize().y / 2)) {
-		rect.setPosition(rect.getPosition().x, SCREEN_HEIGHT - (rect.getSize().y / 2));
-		is_grounded = true;
-		is_jumping = false;
-	}
-	else {
-		is_grounded = false;
-	}
-}
-
 
 void Player::Update(float dt, std::vector<Platform> platforms) {
+	Animate(dt);
 	Move(dt);
-	rect.move(velocity + (acceleration));
-	//UpdatePhysics(dt);
+	rect.move(velocity + acceleration);
 	Collision(platforms);
+
+	if (rect.getPosition().x + (rect.getSize().x / 2) < 0) {
+		rect.setPosition(SCREEN_WIDTH+ (rect.getSize().x / 2), rect.getPosition().y);
+	}
+	if (rect.getPosition().x - (rect.getSize().x / 2) > SCREEN_WIDTH) {
+		rect.setPosition(0 - (rect.getSize().x / 2), rect.getPosition().y);
+	}
+	sprite.setPosition(rect.getPosition());
+
 }
 
 
@@ -77,13 +88,61 @@ void Player::Jump() {
 }
 
 
+void Player::Animate(float dt) {
+	if (velocity.x != 0) {
+		is_walking = true;
+	}
+	else {
+		is_walking = false;
+	}
+	
+	if (is_walking) {
+		sprite.setTextureRect(walk_anim[current_frame]);
+		duration += dt;
+		if (duration > 0.25f) {
+			duration -= 0.25f;
+			current_frame = (current_frame + 1) % (idle_anim.size());
+		}
+		if (acceleration.x < 0.0f) {
+			sprite.setScale(-1.0f, 1.0f);
+		}
+		else {
+			sprite.setScale(1.0f, 1.0f);
+		}
+	}
+
+	if (is_jumping) {
+		sprite.setTextureRect(jump_anim);
+	}
+
+
+	if (!is_walking && !is_jumping) {
+		sprite.setTextureRect(idle_anim[current_frame]);
+		duration += dt;
+		if (duration > 0.75f) {
+			duration -= 0.75f;
+			current_frame = (current_frame + 1) % (idle_anim.size());
+			if (current_frame == 1) {
+				sprite.setOrigin(rect.getOrigin().x + 10, rect.getOrigin().y+10);
+
+			}
+			else {
+				sprite.setOrigin(rect.getOrigin().x + 10, rect.getOrigin().y);
+			}
+		}
+	}
+}
+
+
 void Player::Collision(std::vector<Platform> platforms) {
 	bottom = rect.getPosition().y + (rect.getSize().y / 2);
+	top = bottom - 20;	//3rd quarter
+
 	for (size_t i = 0; i < platforms.size(); i++)
 	{
 		if (velocity.y > 0) {
 			if (rect.getGlobalBounds().intersects(platforms[i].rect.getGlobalBounds())) {
-				if (bottom >= platforms[i].top) {
+				if (top < platforms[i].bottom && bottom >= platforms[i].top && top) {
 					rect.setPosition(rect.getPosition().x, platforms[i].top - (rect.getSize().y / 2));
 					velocity.y = 0;
 					is_grounded = true;
@@ -96,5 +155,6 @@ void Player::Collision(std::vector<Platform> platforms) {
 
 
 void Player::Draw(sf::RenderWindow& window) {
-	window.draw(rect);
+	//window.draw(rect);
+	window.draw(sprite);
 }

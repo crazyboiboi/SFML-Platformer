@@ -8,14 +8,15 @@
 class Player : public Entity {
 
 public:
-	Player(std::string imgDirectory, float posX, float posY, sf::Vector2f size);
+	Player(sf::Texture& spritesheet, float posX, float posY, sf::Vector2f size);
 	~Player();
+
+	void LoadAnimSprites(sf::Texture& spritesheet);
 
 	void Update(float dt, std::vector<Platform> platforms);
 
-	void UpdatePhysics(float dt);
-
 	void Move(float dt);
+	void Animate(float dt);
 
 	void Jump();
 	void ShortJump();
@@ -26,9 +27,9 @@ public:
 
 
 private:
-	bool is_grounded;
+	bool is_grounded = false;
 	bool is_jumping = true;
-	bool is_walking;
+	bool is_walking = false;
 
 	bool collideLeft = false;
 	bool collideRight = false;
@@ -36,5 +37,10 @@ private:
 
 	sf::Vector2f velocity;
 	sf::Vector2f acceleration;
-
+	
+	int current_frame = 0;
+	float duration = 0.f;
+	std::vector<sf::IntRect> idle_anim;
+	std::vector<sf::IntRect> walk_anim;
+	sf::IntRect jump_anim;
 };

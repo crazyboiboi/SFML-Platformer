@@ -2,19 +2,20 @@
 #include "PlatformGenerator.hpp"
 #include <iostream>
 
-PlatformGenerator::PlatformGenerator() {
-	Platform platform1("hmm", 0, 720, sf::Vector2f(800, 100));
-	//Platform platform2("hmm", 125, 575, sf::Vector2f(200, 30));
-	//Platform platform3("hmm", 400, 380, sf::Vector2f(200, 30));
-	//Platform platform4("hmm", 300, 240, sf::Vector2f(200, 30));
-	//Platform platform5("hmm", 500, 0, sf::Vector2f(200, 30));
 
+PlatformGenerator::PlatformGenerator(sf::Texture& spritesheet) {
+	_spritesheet = spritesheet;
+	platform_image = sf::IntRect(0, 288, 380, 94);
+	Initialize();
+}
+
+
+void PlatformGenerator::Initialize() {
+	Platform platform1(_spritesheet, platform_image, 0, 720, sf::Vector2f(380, 80));
+	Platform platform2(_spritesheet, platform_image, 375, 575, sf::Vector2f(200, 70));
 
 	platforms.push_back(platform1);
-	//platforms.push_back(platform2);
-	//platforms.push_back(platform3);
-	//platforms.push_back(platform4);
-	//platforms.push_back(platform5);
+	platforms.push_back(platform2);
 }
 
 
@@ -25,7 +26,6 @@ void PlatformGenerator::Update(Camera& camera) {
 	RemovePlatform(camera);
 	if (platforms.size() < _maxSize) {
 		SpawnPlatform();
-		std::cout << platforms.size() << std::endl;
 	}
 }
 
@@ -35,10 +35,10 @@ void PlatformGenerator::SpawnPlatform() {
 	float height = rand() % (PLATFORM_MAX_HEIGHT - PLATFORM_MIN_HEIGHT + 1) + PLATFORM_MIN_HEIGHT;
 
 	float posX = rand() % (SCREEN_WIDTH - width + 1);
-	float posY = rand() % (200 - 100 + 1) + 100;
+	float posY = rand() % (250 - 150 + 1) + 150;
 	sf::Vector2f newPosition = sf::Vector2f(posX, platforms.back().rect.getPosition().y - posY);
 
-	Platform newPlat("hmm", newPosition.x, newPosition.y, sf::Vector2f(width, height));
+	Platform newPlat(_spritesheet, platform_image, newPosition.x, newPosition.y, sf::Vector2f(width, height));
 	platforms.push_back(newPlat);
 }
 

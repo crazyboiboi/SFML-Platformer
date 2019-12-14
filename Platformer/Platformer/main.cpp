@@ -13,10 +13,16 @@ int main() {
 	sf::RenderWindow window(sf::VideoMode(600, 800), "Platformer");
 	window.setFramerateLimit(60);
 
+	sf::Texture spritesheet;
+	if (!spritesheet.loadFromFile(SPRITESHEET)) {
+		std::cout << "ERROR LOADING FILE" << std::endl;
+	}
+
 	//Game Objects
-	Player player("images", 100, 600, sf::Vector2f(50, 50));
-	
-	PlatformGenerator platform;
+	Player player(spritesheet, 100, 600, sf::Vector2f(100, 190));
+	//player.sprite.setTexture(spritesheet);
+
+	PlatformGenerator platform(spritesheet);
 
 	sf::Event event;
 	sf::Clock clock;
@@ -24,7 +30,6 @@ int main() {
 
 	//Camera
 	Camera camera;
-
 
 	while (window.isOpen()) {
 		while (window.pollEvent(event)) {
@@ -40,7 +45,6 @@ int main() {
 					player.ShortJump();
 				}
 			}
-
 		}
 		camera.Render(window);
 
@@ -52,20 +56,14 @@ int main() {
 
 		//Update
 		player.Update(dt, platform.GetPlatforms());
-
 		camera.Update(dt, player);
-
 		platform.Update(camera);
 
 
 		//Draw
-		window.clear();
-
+		window.clear(sf::Color(94, 244, 255));
 		platform.Draw(window);
-
 		player.Draw(window);
-
-
 		window.display();
 
 	}
