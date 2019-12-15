@@ -3,8 +3,8 @@
 
 
 
-Platform::Platform(sf::Texture& platform_tex, sf::IntRect intrect, float posX, float posY, sf::Vector2f size) {
-	sprite.setTexture(platform_tex);
+Platform::Platform(sf::Texture& spritesheet, sf::IntRect intrect, float posX, float posY, sf::Vector2f size) {
+	sprite.setTexture(spritesheet);
 	sprite.setTextureRect(intrect);
 	sprite.setPosition(posX, posY);
 	sprite.setScale(size.x / 370, size.y / 85);

@@ -20,6 +20,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemySpawner.cpp" />
+    <ClCompile Include="HUD.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="PlatformGenerator.cpp" />
@@ -28,8 +31,11 @@
   <ItemGroup>
     <ClInclude Include="Camera.hpp" />
     <ClInclude Include="DEFINITIONS.hpp" />
+    <ClInclude Include="Enemy.hpp" />
+    <ClInclude Include="EnemySpawner.hpp" />
     <ClInclude Include="Entity.hpp" />
     <ClInclude Include="Hitbox.hpp" />
+    <ClInclude Include="HUD.hpp" />
     <ClInclude Include="Platform.hpp" />
     <ClInclude Include="PlatformGenerator.hpp" />
     <ClInclude Include="Player.hpp" />

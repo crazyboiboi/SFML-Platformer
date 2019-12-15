@@ -9,13 +9,15 @@
 #define PLAYER_GRAV 0.7
 #define PLAYER_JUMP 18
 
+#define CAMERA_SPEED 10.0f
+
 #define PLATFORM_MAX_LENGTH 250
 #define PLATFORM_MIN_LENGTH 150
 #define PLATFORM_MAX_HEIGHT 80
 #define PLATFORM_MIN_HEIGHT 65
 
 #define SPRITESHEET "images/Spritesheet.png"
-
+#define GAME_FONT "fonts/PusabFont.otf"
 
 
 

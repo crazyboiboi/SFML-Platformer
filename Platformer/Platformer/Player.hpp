@@ -31,16 +31,14 @@ private:
 	bool is_jumping = true;
 	bool is_walking = false;
 
-	bool collideLeft = false;
-	bool collideRight = false;
-	bool collideBottom = false;
-
 	sf::Vector2f velocity;
 	sf::Vector2f acceleration;
 	
 	int current_frame = 0;
-	float duration = 0.f;
+	float duration = 0.0f;
 	std::vector<sf::IntRect> idle_anim;
 	std::vector<sf::IntRect> walk_anim;
 	sf::IntRect jump_anim;
+
+	int _score;
 };

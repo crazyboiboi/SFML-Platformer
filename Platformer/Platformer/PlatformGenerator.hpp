@@ -20,6 +20,7 @@ public:
 	void Update(Camera& camera);
 
 	std::vector<Platform> GetPlatforms();
+	int GetScore();
 
 private:
 	sf::Texture _spritesheet;
@@ -27,4 +28,6 @@ private:
 
 	std::vector<Platform> platforms;
 	int _maxSize = 8;
+
+	int _score;
 };

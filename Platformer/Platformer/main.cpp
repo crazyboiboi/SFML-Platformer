@@ -5,6 +5,9 @@
 #include "Platform.hpp"
 #include "Camera.hpp"
 #include "PlatformGenerator.hpp"
+#include "HUD.hpp"
+#include "Enemy.hpp"
+#include "EnemySpawner.hpp"
 
 
 int main() {
@@ -20,9 +23,11 @@ int main() {
 
 	//Game Objects
 	Player player(spritesheet, 100, 600, sf::Vector2f(100, 190));
-	//player.sprite.setTexture(spritesheet);
 
 	PlatformGenerator platform(spritesheet);
+	EnemySpawner enemySpawner(spritesheet);
+
+	HUD hud;
 
 	sf::Event event;
 	sf::Clock clock;
@@ -58,12 +63,18 @@ int main() {
 		player.Update(dt, platform.GetPlatforms());
 		camera.Update(dt, player);
 		platform.Update(camera);
+		enemySpawner.Update(dt);
 
+		hud.UpdateScore(platform.GetScore(), camera);
 
 		//Draw
 		window.clear(sf::Color(94, 244, 255));
+
 		platform.Draw(window);
 		player.Draw(window);
+		enemySpawner.Draw(window);
+		hud.Draw(window);
+
 		window.display();
 
 	}

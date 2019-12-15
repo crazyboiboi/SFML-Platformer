@@ -47,6 +47,7 @@ void PlatformGenerator::RemovePlatform(Camera &camera) {
 	for (int i = 0; i < platforms.size(); i++) {
 		if (platforms[i].rect.getPosition().y - camera.getPosition().y > SCREEN_HEIGHT/2) {
 			platforms.erase(platforms.begin()+i);
+			_score += 10;
 		}
 	}
 }
@@ -63,3 +64,7 @@ std::vector<Platform> PlatformGenerator::GetPlatforms() {
 	return platforms;
 }
 
+
+int PlatformGenerator::GetScore() {
+	return _score;
+}
