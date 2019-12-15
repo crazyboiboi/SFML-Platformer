@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "Enemy.hpp"
+#include "Player.hpp"
 
 class EnemySpawner {
 
@@ -9,12 +10,14 @@ public:
 	EnemySpawner(sf::Texture& spritesheet);
 	~EnemySpawner();
 
-	void SpawnEnemy();
+	void SpawnEnemy(Player player);
 	void RemoveEnemy();
 
 	void Draw(sf::RenderWindow& window);
 	
-	void Update(float dt);
+	void Update(float dt, Player player);
+
+	std::vector<Enemy> GetEnemies();
 
 private:
 	int _maxEnemies;

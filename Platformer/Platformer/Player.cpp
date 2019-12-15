@@ -52,17 +52,20 @@ void Player::Move(float dt) {
 
 
 
-void Player::Update(float dt, std::vector<Platform> platforms) {
+void Player::Update(float dt, std::vector<Platform> platforms, std::vector<Enemy> enemies) {
 	Animate(dt);
 	Move(dt);
 	rect.move(velocity + acceleration);
-	Collision(platforms);
+	Collision(platforms, enemies);
 
 	if (rect.getPosition().x + (rect.getSize().x / 2) < 0) {
 		rect.setPosition(SCREEN_WIDTH+ (rect.getSize().x / 2), rect.getPosition().y);
 	}
 	if (rect.getPosition().x - (rect.getSize().x / 2) > SCREEN_WIDTH) {
 		rect.setPosition(0 - (rect.getSize().x / 2), rect.getPosition().y);
+	}
+	if (platforms[0].rect.getPosition().y - rect.getPosition().y < -300) {
+		is_dead = true;
 	}
 	sprite.setPosition(rect.getPosition());
 
@@ -134,7 +137,7 @@ void Player::Animate(float dt) {
 }
 
 
-void Player::Collision(std::vector<Platform> platforms) {
+void Player::Collision(std::vector<Platform> platforms, std::vector<Enemy> enemies) {
 	bottom = rect.getPosition().y + (rect.getSize().y / 2);
 	top = bottom - 20;	//3rd quarter
 
@@ -151,6 +154,13 @@ void Player::Collision(std::vector<Platform> platforms) {
 			}
 		}
 	}	
+
+	for (size_t i = 0; i < enemies.size(); i++)
+	{
+		if (rect.getGlobalBounds().intersects(enemies[i].rect.getGlobalBounds())) {
+			is_dead = true;
+		}
+	}
 }
 
 

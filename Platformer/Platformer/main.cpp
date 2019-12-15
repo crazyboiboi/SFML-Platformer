@@ -60,10 +60,10 @@ int main() {
 
 
 		//Update
-		player.Update(dt, platform.GetPlatforms());
+		player.Update(dt, platform.GetPlatforms(), enemySpawner.GetEnemies());
 		camera.Update(dt, player);
 		platform.Update(camera);
-		enemySpawner.Update(dt);
+		enemySpawner.Update(dt, player);
 
 		hud.UpdateScore(platform.GetScore(), camera);
 
