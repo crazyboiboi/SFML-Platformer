@@ -36,6 +36,9 @@ int main() {
 	//Camera
 	Camera camera;
 
+	int gamestate = GAMESTATE::START;
+	bool gameOver = false;
+
 	while (window.isOpen()) {
 		while (window.pollEvent(event)) {
 			if (event.type == sf::Event::Closed) {
@@ -51,29 +54,89 @@ int main() {
 				}
 			}
 		}
+
 		camera.Render(window);
 
-		float dt = clock.restart().asSeconds();
+		float dt = clock.restart().asSeconds();		
 
-
-		//Process Input
-
-
-		//Update
-		player.Update(dt, platform.GetPlatforms(), enemySpawner.GetEnemies());
-		camera.Update(dt, player);
-		platform.Update(camera);
-		enemySpawner.Update(dt, player);
-
-		hud.UpdateScore(platform.GetScore(), camera);
+		gameOver = player.playerIsDead();
 
 		//Draw
 		window.clear(sf::Color(94, 244, 255));
 
-		platform.Draw(window);
-		player.Draw(window);
-		enemySpawner.Draw(window);
-		hud.Draw(window);
+		//Input should be handled above, then set appropriate state
+		//HUD should have different draws?
+		switch (gamestate) {
+		case GAMESTATE::START:
+			//All update blocks should be in here
+			//Check if pause button is clicked, set game to pause
+			if (event.type == sf::Event::MouseButtonPressed) {
+				BUTTON button = hud.ButtonClicked(window);
+				if (button == BUTTON::PAUSEBTN) {
+				gamestate = GAMESTATE::PAUSE;
+				}
+			}
+
+			player.Update(dt, platform.GetPlatforms(), enemySpawner.GetEnemies());
+			camera.Update(dt, player);
+			platform.Update(camera);
+			hud.UpdateScore(platform.GetScore());
+			enemySpawner.Update(dt, player);
+
+			if (gameOver) {
+				gamestate = GAMESTATE::GAMEOVER;
+			}
+
+			platform.Draw(window);
+			player.Draw(window);
+			enemySpawner.Draw(window);
+			hud.Draw(window, camera);
+			break;
+		case GAMESTATE::PAUSE:
+			//Wait for key
+			//Check if resume is pressed, set back to game start and resume
+			//Check if quit
+			if (event.type == sf::Event::MouseButtonPressed) {
+				BUTTON button = hud.ButtonClicked(window);
+				if (button == BUTTON::RESUMEBTN) {
+					gamestate = GAMESTATE::START;
+				}
+				else if (button == BUTTON::QUITBTN) {
+					gamestate = GAMESTATE::QUIT;
+				}
+			}
+
+			platform.Draw(window);
+			player.Draw(window);
+			enemySpawner.Draw(window);
+			hud.DrawPauseScreen(window, camera);
+			break;
+		case GAMESTATE::GAMEOVER:
+			//Wait for key
+			//If play again is pressed, set back to game start and reset the game
+			//Else if exit button is pressed, exit the game using window.close()
+			camera.Reset();
+
+			if (event.type == sf::Event::MouseButtonPressed) {
+				BUTTON button = hud.ButtonClicked(window);
+				if (button == BUTTON::RETRYBTN) {
+					clock.restart();
+					player.Reset();
+					platform.Reset();
+					enemySpawner.Reset();
+					gamestate = GAMESTATE::START;
+				}
+				else if (button == BUTTON::QUITBTN) {
+					gamestate = GAMESTATE::QUIT;
+				}
+			}
+			hud.DrawGameOverScreen(window, camera);
+			break;
+		case GAMESTATE::QUIT:
+			window.close();
+			break;
+		}
+		
 
 		window.display();
 

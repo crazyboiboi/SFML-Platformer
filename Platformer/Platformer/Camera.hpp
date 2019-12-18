@@ -9,6 +9,8 @@ class Camera {
 public:
 	Camera();
 	~Camera();
+	
+	void Reset();
 
 	void Update(float dt, Player player);
 	void Render(sf::RenderWindow& window);

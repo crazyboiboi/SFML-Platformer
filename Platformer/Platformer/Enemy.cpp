@@ -7,9 +7,12 @@
 
 Enemy::Enemy(sf::Texture& spritesheet, float posX, float posY, bool going_left, sf::Vector2f size) {
 	sprite.setTexture(spritesheet);
-	sprite.setTextureRect(sf::IntRect(566, 510, 122, 139));
+	//sprite.setTextureRect(sf::IntRect(566, 510, 122, 139));
 	sprite.setPosition(posX, posY);
 	sprite.setScale(size.x/122, size.y / 135);
+
+	enemy_anim.push_back(sf::IntRect(566, 510, 122, 139));
+	enemy_anim.push_back(sf::IntRect(568, 1534, 122, 135));
 
 	rect.setOrigin(size / 2.0f);
 	rect.setSize(size*0.85f);
@@ -35,6 +38,7 @@ Enemy::Enemy(sf::Texture& spritesheet, float posX, float posY, bool going_left, 
 Enemy::~Enemy() { }
 
 void Enemy::Update(float dt) {
+	Animate(dt);
 	rect.move(velocity);
 
 	if (rect.getPosition().x + rect.getSize().x < 0) {
@@ -44,6 +48,16 @@ void Enemy::Update(float dt) {
 		_outOfFrame = true;
 	}
 	sprite.setPosition(rect.getPosition());
+}
+
+
+void Enemy::Animate(float dt) {
+	sprite.setTextureRect(enemy_anim[current_frame]);
+	duration += dt;
+	if (duration > 0.2f * velocity.x) {
+		duration -= 0.75f;
+		current_frame = (current_frame + 1) % (enemy_anim.size());
+	}
 }
 
 

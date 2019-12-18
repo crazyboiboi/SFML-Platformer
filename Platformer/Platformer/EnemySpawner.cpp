@@ -18,6 +18,14 @@ EnemySpawner::EnemySpawner(sf::Texture& spritesheet) {
 
 EnemySpawner::~EnemySpawner() { }
 
+void EnemySpawner::Reset() {
+	enemies.clear();
+	Enemy enemy1(_spritesheet, 0, 100, false, sf::Vector2f(90, 100));
+	Enemy enemy2(_spritesheet, SCREEN_WIDTH, 400, true, sf::Vector2f(90, 100));
+	enemies.push_back(enemy1);
+	enemies.push_back(enemy2);
+}
+
 void EnemySpawner::SpawnEnemy(Player player) {
 	float posX = rand()%(2) == 1 ? -40.0f : SCREEN_WIDTH;
 	float posY = rand() % (800);

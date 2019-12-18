@@ -22,6 +22,13 @@ void PlatformGenerator::Initialize() {
 PlatformGenerator::~PlatformGenerator() { }
 
 
+void PlatformGenerator::Reset() {
+	platforms.clear();
+	Initialize();
+	_score = 0;
+}
+
+
 void PlatformGenerator::Update(Camera& camera) {
 	RemovePlatform(camera);
 	if (platforms.size() < _maxSize) {

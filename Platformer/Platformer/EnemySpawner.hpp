@@ -10,6 +10,8 @@ public:
 	EnemySpawner(sf::Texture& spritesheet);
 	~EnemySpawner();
 
+	void Reset();
+
 	void SpawnEnemy(Player player);
 	void RemoveEnemy();
 

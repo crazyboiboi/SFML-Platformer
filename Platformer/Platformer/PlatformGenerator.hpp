@@ -13,6 +13,8 @@ public:
 
 	void Initialize();
 
+	void Reset();
+
 	void SpawnPlatform();
 	void RemovePlatform(Camera& camera);
 

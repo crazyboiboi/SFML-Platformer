@@ -12,12 +12,18 @@ public:
 
 	void Update(float dt);
 	void Draw(sf::RenderWindow& window);
+	void Animate(float dt);
 
 	bool outOfFrame();
 
 private:
 	sf::Vector2f velocity;
 	sf::Vector2f position;
+
+	int current_frame = 0;
+	float duration = 0.0f;
+
+	std::vector<sf::IntRect> enemy_anim;
 
 	bool _outOfFrame = false;
 };

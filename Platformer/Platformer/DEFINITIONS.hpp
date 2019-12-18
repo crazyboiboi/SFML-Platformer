@@ -17,10 +17,18 @@
 #define PLATFORM_MIN_HEIGHT 65
 
 #define SPRITESHEET "images/Spritesheet.png"
+#define RETRY_ICON "images/Retry.png"
+#define RESUME_ICON "images/Resume.png"
+#define PAUSE_ICON "images/Pause.png"
+#define EXIT_ICON "images/Exit.png"
 #define GAME_FONT "fonts/PusabFont.otf"
 
 
 
-enum PLAYERSTATE {
-	STAND, WALK, JUMP
+enum GAMESTATE {
+	START, GAMEOVER, PAUSE, QUIT
+};
+
+enum BUTTON {
+	DEFAULT, PAUSEBTN, RESUMEBTN, RETRYBTN, QUITBTN
 };

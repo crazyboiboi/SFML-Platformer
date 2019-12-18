@@ -5,7 +5,8 @@
 Player::Player(sf::Texture& spritesheet, float posX, float posY, sf::Vector2f size) {
 	rect.setOrigin(size / 2.0f);
 	rect.setSize(size);
-	rect.setPosition(posX, posY);
+	position = sf::Vector2f(posX, posY);
+	rect.setPosition(position);
 	rect.setFillColor(sf::Color::White);
 
 	sprite.setOrigin(rect.getOrigin().x+10, rect.getOrigin().y);
@@ -13,6 +14,17 @@ Player::Player(sf::Texture& spritesheet, float posX, float posY, sf::Vector2f si
 }
 
 Player::~Player() { }
+
+
+void Player::Reset() {
+	is_dead = false;
+	is_grounded = false;
+	is_jumping = true;
+	is_walking = false;
+	is_dead = false;
+
+	rect.setPosition(position);
+}
 
 
 void Player::LoadAnimSprites(sf::Texture& spritesheet) {
@@ -167,4 +179,9 @@ void Player::Collision(std::vector<Platform> platforms, std::vector<Enemy> enemi
 void Player::Draw(sf::RenderWindow& window) {
 	//window.draw(rect);
 	window.draw(sprite);
+}
+
+
+bool Player::playerIsDead() {
+	return is_dead;
 }
